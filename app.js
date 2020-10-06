@@ -23,6 +23,14 @@ app.get("/api/courses", (req, res) => {
   res.send(JSON.stringify(["CSE", "IT", "ECE", "MECH", "CIVIL", "BIO"]));
 });
 
+app.get("/api/courses/:year/:month", (req, res) => {
+  const year = req.params.year;
+  const month = req.params.month;
+
+  //res.send(`Looking for ${year} and ${month}`);
+  res.send(req.query);
+});
+
 app.listen(port, () => {
   console.log(`Listening on ${port}`);
 });
