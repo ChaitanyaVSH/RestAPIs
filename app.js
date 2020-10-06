@@ -1,6 +1,7 @@
 var http = require("http");
 const express = require("express");
 const app = express();
+const port = process.env.port || 1234;
 
 // app.get()
 // app.post()
@@ -9,6 +10,7 @@ const app = express();
 
 app.get("/", (req, res) => {
   /**
+   * app.get("URL", "CALLBACK Function")
    * http://expressjs.com/en/4x/api.html#req
    *
    * Documentation for the Express requests
@@ -21,8 +23,8 @@ app.get("/api/courses", (req, res) => {
   res.send(JSON.stringify(["CSE", "IT", "ECE", "MECH", "CIVIL", "BIO"]));
 });
 
-app.listen(4000, () => {
-  console.log("Listening ra rey baabu");
+app.listen(port, () => {
+  console.log(`Listening on ${port}`);
 });
 
 // const server = http.createServer(function (request, response) {
