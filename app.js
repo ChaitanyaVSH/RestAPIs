@@ -1,6 +1,7 @@
 var http = require("http");
 const express = require("express");
 const app = express();
+app.use(express.json());
 const port = process.env.PORT || 1234;
 
 const courses = [
@@ -51,6 +52,22 @@ app.get("/api/courses/:year/:month", (req, res) => {
   res.send(req.query);
 });
 
+/**
+ * app.post() requests.
+ *
+ * To get the variables from the request body, we need to enable it in the Express as it is disabled by default.
+ */
+app.post("/api/courses", (req, res) => {
+  const course = {
+    id: courses.length + 1,
+    name: req.body.name,
+  };
+
+  courses.push(course);
+  console.log(courses);
+
+  res.send(courses);
+});
 app.listen(port, () => {
   console.log(`Listening on ${port}`);
 });
