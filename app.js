@@ -1,7 +1,7 @@
 var http = require("http");
 const express = require("express");
 const app = express();
-const port = process.env.port || 1234;
+const port = process.env.PORT || 1234;
 
 // app.get()
 // app.post()
