@@ -3,6 +3,12 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 1234;
 
+const courses = [
+  { id: 1, name: "Complete Node" },
+  { id: 2, name: "Complete ReactJS" },
+  { id: 3, name: "Complete Flutter" },
+];
+
 // app.get()
 // app.post()
 // app.put()
@@ -20,7 +26,21 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/courses", (req, res) => {
-  res.send(JSON.stringify(["CSE", "IT", "ECE", "MECH", "CIVIL", "BIO"]));
+  res.send(JSON.stringify(courses));
+});
+
+app.get("/api/courses/:id", (req, res) => {
+  //   const id = req.params.id;
+  //   const course = courses[id - 1];
+
+  const course = courses.find((c) => c.id === parseInt(req.params.id));
+  /**
+   * If the requested resource is not found, it's better to send a 404 status code as below.
+   */
+  if (!course)
+    res.status(404).send("The Course with the given ID is not found");
+
+  res.send(`The Course name is ${course.name}`);
 });
 
 app.get("/api/courses/:year/:month", (req, res) => {
