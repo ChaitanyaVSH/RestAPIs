@@ -1,4 +1,5 @@
 var http = require("http");
+const Joi = require("joi");
 const express = require("express");
 const app = express();
 app.use(express.json());
@@ -58,6 +59,28 @@ app.get("/api/courses/:year/:month", (req, res) => {
  * To get the variables from the request body, we need to enable it in the Express as it is disabled by default.
  */
 app.post("/api/courses", (req, res) => {
+  /**
+   * Writing the below style of input valdiations is very sad and not good in a long-term
+   *
+   * Useful package is joi: https://www.npmjs.com/package/joi
+   *
+   * https://stackoverflow.com/questions/57956609/joi-1-default-validate-is-not-a-function
+   *
+   * For Joi,
+   * 1. Define a Joi Schema
+   */
+
+  const schema = Joi.object({
+    name: Joi.string().min(3).required(),
+    id: Joi.number().min(1).max(5).required(),
+  });
+
+  const result = schema.validate(req.body);
+
+  if (result.error) {
+    res.status(400).send(result.error.details[0].message);
+    return;
+  }
   const course = {
     id: courses.length + 1,
     name: req.body.name,
