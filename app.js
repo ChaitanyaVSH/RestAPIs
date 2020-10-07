@@ -2,8 +2,9 @@ var http = require("http");
 const Joi = require("joi");
 const express = require("express");
 const app = express();
-app.use(express.json());
 const port = process.env.PORT || 1234;
+
+app.use(express.json());
 
 const courses = [
   { id: 1, name: "Complete Node" },
@@ -13,7 +14,7 @@ const courses = [
 
 // app.get()
 // app.post()
-// app.put()
+// app.put() --> For Updating the resources
 // app.delete()
 
 app.get("/", (req, res) => {
@@ -40,7 +41,7 @@ app.get("/api/courses/:id", (req, res) => {
    * If the requested resource is not found, it's better to send a 404 status code as below.
    */
   if (!course)
-    res.status(404).send("The Course with the given ID is not found");
+    return res.status(404).send("The Course with the given ID is not found");
 
   res.send(`The Course name is ${course.name}`);
 });
@@ -70,17 +71,9 @@ app.post("/api/courses", (req, res) => {
    * 1. Define a Joi Schema
    */
 
-  const schema = Joi.object({
-    name: Joi.string().min(3).required(),
-    id: Joi.number().min(1).max(5).required(),
-  });
+  const { error } = validateCourse(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
 
-  const result = schema.validate(req.body);
-
-  if (result.error) {
-    res.status(400).send(result.error.details[0].message);
-    return;
-  }
   const course = {
     id: courses.length + 1,
     name: req.body.name,
@@ -91,6 +84,53 @@ app.post("/api/courses", (req, res) => {
 
   res.send(courses);
 });
+
+app.put("/api/courses/:id", (req, res) => {
+  /**
+   * Look up for the course, if it is not present then return 404
+   */
+  const course = courses.find((c) => c.id === parseInt(req.params.id));
+
+  if (!course)
+    return res
+      .status(404)
+      .send(`Course with id: ${req.params.id} is not found`);
+
+  /**
+   * Validate the request params with JOI
+   */
+  const { error } = validateCourse(req.body);
+
+  if (error) return res.status(400).send(error.details[0].message);
+
+  /**
+   * Update the course
+   */
+  course.name = req.body.name;
+  console.log(courses);
+  res.send(course);
+});
+
+app.delete("/api/courses/:id", (req, res) => {
+  //Fetch the ID and check if the course is actuallu present or not.
+  const id = req.params.id;
+  const course = courses.find((c) => c.id === parseInt(id));
+  if (!course)
+    return res.status(404).send(`Course with the id: ${id} is not found.`);
+
+  const index = courses.indexOf(course);
+  courses.splice(index, 1);
+
+  res.send(courses);
+  console.log(courses);
+});
+
+function validateCourse(course) {
+  const schema = Joi.object({
+    name: Joi.string().min(3).required(),
+  });
+  return schema.validate(course);
+}
 app.listen(port, () => {
   console.log(`Listening on ${port}`);
 });
