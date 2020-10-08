@@ -29,6 +29,8 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/courses", (req, res) => {
+  console.log("Got a GET request from another ReactAPP");
+  console.log(req.hostname);
   res.send(JSON.stringify(courses));
 });
 
