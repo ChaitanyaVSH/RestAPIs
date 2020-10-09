@@ -7,9 +7,10 @@ const port = process.env.PORT || 1234;
 app.use(express.json());
 
 const courses = [
-  { id: 1, name: "Complete Node" },
-  { id: 2, name: "Complete ReactJS" },
-  { id: 3, name: "Complete Flutter" },
+  { id: 1, name: "Complete Node", completed: false },
+  { id: 2, name: "Complete ReactJS", completed: false },
+  { id: 3, name: "Complete Flutter", completed: false },
+  { id: 4, name: "Complete Java and CPP", completed: false },
 ];
 
 // app.get()
