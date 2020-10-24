@@ -7,10 +7,34 @@ const port = process.env.PORT || 1234;
 app.use(express.json());
 
 const courses = [
-  { id: 1, name: "Complete Node", completed: false },
-  { id: 2, name: "Complete ReactJS", completed: false },
-  { id: 3, name: "Complete Flutter", completed: false },
-  { id: 4, name: "Complete Java and CPP", completed: false },
+  {
+    id: 1,
+    name: "Complete NodeJS and JWT",
+    completed: false,
+    taughtBy: "Ramanujan",
+    duration: "10 Hours",
+  },
+  {
+    id: 2,
+    name: "Complete ReactJS",
+    completed: false,
+    taughtBy: "Chaitu Maverick",
+    duration: "29 Hours",
+  },
+  {
+    id: 3,
+    name: "Complete Flutter and VelocityX",
+    completed: false,
+    taughtBy: "Alekhya",
+    duration: "15 Hours",
+  },
+  {
+    id: 4,
+    name: "Complete Java and CPP",
+    completed: false,
+    taughtBy: "Lakshmi",
+    duration: "35 Hours",
+  },
 ];
 
 // app.get()
